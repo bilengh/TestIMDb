@@ -32,7 +32,11 @@ public class imdbTop250 {
     }
     try {
       assertTrue(isElementPresent(By.cssSelector("td.titleColumn")));
+      WebElement elem = driver.findElement(By.xpath("//*[@id='main']/div/span/div/div/div[2]/table/tbody/tr[1]/td[2]/a"));
+      String title = elem.getText();
+      System.out.println("Passed: The current top movie is " + title + "\n");
     } catch (Error e) {
+      System.out.println("Failed: No Titles Found");
       verificationErrors.append(e.toString());
     }
   }

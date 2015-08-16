@@ -3,21 +3,25 @@
 import java.util.regex.Pattern;
 import java.io.FileInputStream;
 import java.util.concurrent.TimeUnit;
+
+import org.cyberneko.html.HTMLElements.Element;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+
 import jxl.Sheet;
 import jxl.Workbook;
 
 public class imdbGenre {
   Sheet s;	
-  private WebDriver driver;
+  WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
+ 
 
   @Before
   public void setUp() throws Exception {
@@ -28,7 +32,8 @@ public class imdbGenre {
 
   @Test
   public void testIMDBGenre() throws Exception {
-    driver.get(baseUrl + "chart/top");
+	  
+	driver.get(baseUrl + "chart/top");
     FileInputStream fi = new FileInputStream("resources/Genres.xls"); 
     Workbook w = Workbook.getWorkbook(fi); 
     s = w.getSheet(0); 
@@ -38,22 +43,31 @@ public class imdbGenre {
     	
 	    try {
 	      assertEquals(genre, driver.findElement(By.linkText(genre)).getText());
+	      System.out.println("Passed: "+ genre + " Link Found");
 	    } catch (Error e) {
+	    	System.out.println("Failed: "+ genre + " Link Not Found");
 	      verificationErrors.append(e.toString());
 	    }
 	    driver.findElement(By.linkText(genre)).click();
 	    System.out.println("Selected Genre "+genre); 
 	    try {
 	      assertEquals("Genre: "+genre, driver.findElement(By.cssSelector("h1")).getText());
+	      System.out.println("Passed: "+ genre + " Page Found");
 	    } catch (Error e) {
+	    	System.out.println("Failed: "+ genre + " Page Not Found");
 	      verificationErrors.append(e.toString());
 	    }
 	    try {
 	      assertTrue(isElementPresent(By.cssSelector("td.title")));
+	      WebElement elem = driver.findElement(By.xpath("//*[@id='main']/div/table/tbody/tr[1]/td[3]/a"));
+	      String title = elem.getText();
+	      System.out.println("Passed: Top " + genre + " title is " + title + "\n");
 	    } catch (Error e) {
+	      System.out.println("Failed: No Titles Found");
 	      verificationErrors.append(e.toString());
 	    }
 	    driver.navigate().to(baseUrl +"chart/top");
+
     }
   }
 
