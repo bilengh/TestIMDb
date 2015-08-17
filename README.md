@@ -1,6 +1,10 @@
 Template project for Selenium WebDriver with Java
 ==================================================
 
+Introduction
+
+A Selenium Webdriver based automation solution to test IMDb.com's Top 250 Movies page.
+
 Software Requirement
 -
 
